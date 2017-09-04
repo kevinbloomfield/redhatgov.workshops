@@ -1,8 +1,8 @@
 # file: roles/terraform.infra.aws/tasks/terraform.yml
 ---
 
-#- name: Remove existing key pair
-#  ec2_key: name="{{ default_keypair }}" region="{{ aws_route53_region }}" state=absent
+- name: Remove existing key pair
+  ec2_key: name="{{ default_keypair }}" region="{{ aws_route53_region }}" state=absent
 
 - name: Create new key pair
   ec2_key: name="{{ default_keypair }}" region="{{ aws_route53_region }}" state=present
@@ -24,9 +24,6 @@
 
 - name: Create user data template
   template: dest="{{ terraform_workspace }}/init.tpl" src=init.tpl.j2
-
-- name: Initialize Terraform
-  command: terraform init chdir="{{ terraform_workspace }}"
 
 - name: Terraform apply (build/change infrastructure)
   command: terraform apply chdir="{{ terraform_workspace }}"
